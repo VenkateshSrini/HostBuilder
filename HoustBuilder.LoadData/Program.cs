@@ -18,18 +18,20 @@ namespace HoustBuilder.LoadData
             var builder = new HostBuilder()
                                .ConfigureAppConfiguration((hostingContext, config) =>
                                {
-                                   config.AddJsonFile("appsettings.json", optional: true);
+                                   config.AddJsonFile("appSettings.json", optional: true);
+                                   config.AddCloudFoundry();
                                    config.AddEnvironmentVariables();
 
                                    if (args != null)
                                    {
                                        config.AddCommandLine(args);
                                    }
-                                   config.AddCloudFoundry();
+                                   
                                    
                                })
                                .ConfigureServices((hostContext, services) =>
                                {
+                                  
                                    services.AddOptions();
                                    services.Configure<Dbconfig>(hostContext.Configuration.GetSection("DbConfig"));
                                    services.AddSingleton<IDatabase, DataLoadDatabase>();

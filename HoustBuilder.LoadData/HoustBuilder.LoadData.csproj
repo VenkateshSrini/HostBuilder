@@ -20,4 +20,10 @@
     <PackageReference Include="Steeltoe.Extensions.Configuration.CloudFoundryCore" Version="2.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
