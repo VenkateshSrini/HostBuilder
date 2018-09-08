@@ -9,33 +9,39 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using HoustBuilder.LoadData.DbServices;
 
 namespace HoustBuilder.LoadData.ServiceProviders
 {
     internal class DataLoaderService : IHostedService
     {
         ILogger<DataLoaderService> _logger;
-        string connectionString;
+        string _connectionString;
+        IDatabase _database;
         public DataLoaderService(ILogger<DataLoaderService>logger, IOptions<CloudFoundryServicesOptions> serviceOptions,
-            IOptions<Dbconfig> dbConfig)
+            IOptions<Dbconfig> dbConfig, IDatabase db)
         {
             var credentials = serviceOptions.Value.ServicesList.FirstOrDefault<Service>((service) =>
             (service.Name.CompareTo(dbConfig.Value.ServiceName) == 0)).Credentials;
 
             if ((credentials != null) && (credentials.Any()))
-                connectionString = credentials["connectionString"].Value;
+                _connectionString = credentials["connectionString"].Value;
             _logger = logger;
+            _database = db;
 
 
         }
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Starting the dbservice");
+            _database.ExecuteScalar(_connectionString, "sp");
+            return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("stopping the dbservice");
+            return Task.CompletedTask;
         }
     }
 }

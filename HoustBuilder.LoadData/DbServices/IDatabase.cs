@@ -8,6 +8,6 @@ namespace HoustBuilder.LoadData.DbServices
 {
     public interface IDatabase
     {
-        void ExecuteScalar(string connectionString, DbCommand spCommand, params DbParameter[] parameters);
+        void ExecuteScalar(string connectionString, string spCommand, params DbParameter[] parameters);
     }
 }

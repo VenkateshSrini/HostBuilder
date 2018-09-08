@@ -7,6 +7,7 @@ using HoustBuilder.LoadData.ServiceProviders;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 using System.Threading.Tasks;
+using HoustBuilder.LoadData.DbServices;
 
 namespace HoustBuilder.LoadData
 {
@@ -31,6 +32,7 @@ namespace HoustBuilder.LoadData
                                {
                                    services.AddOptions();
                                    services.Configure<Dbconfig>(hostContext.Configuration.GetSection("DbConfig"));
+                                   services.AddSingleton<IDatabase, DataLoadDatabase>();
                                    services.AddHostedService<DataLoaderService>();
 
                                    services.AddSingleton<IHostedService, DataLoaderService>();
