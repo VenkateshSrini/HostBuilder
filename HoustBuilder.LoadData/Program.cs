@@ -19,9 +19,8 @@ namespace HoustBuilder.LoadData
                                .ConfigureAppConfiguration((hostingContext, config) =>
                                {
                                    config.AddJsonFile("appSettings.json", optional: true);
-                                   config.AddCloudFoundry();
                                    config.AddEnvironmentVariables();
-
+                                   config.AddCloudFoundry();
                                    if (args != null)
                                    {
                                        config.AddCommandLine(args);
