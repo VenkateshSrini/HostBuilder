@@ -16,8 +16,9 @@ namespace HoustBuilder.LoadData.ServiceProviders
     internal class DataLoaderService : IHostedService
     {
         ILogger<DataLoaderService> _logger;
-        string _connectionString;
+        //string _connectionString;
         IDatabase _database;
+        private bool Iscalled = false;
         public DataLoaderService(ILogger<DataLoaderService>logger, IOptions<CloudFoundryServicesOptions> serviceOptions,
             IOptions<Dbconfig> dbConfig, IDatabase db)
         {
@@ -33,8 +34,9 @@ namespace HoustBuilder.LoadData.ServiceProviders
         }
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Starting the dbservice");
+            _logger.LogInformation($"Starting the dbservice iscalled {Iscalled}");
             _database.ExecuteScalar( "sp");
+            Iscalled = true;
             return Task.CompletedTask;
         }
 

@@ -20,7 +20,7 @@ namespace HoustBuilder.LoadData.DbServices
         public void ExecuteScalar(string spCommand, params DbParameter[] parameters)
         {
 
-            _logger.LogInformation($"connectionstring {_connection.ConnectionString}");
+            _logger.LogInformation($"connectionstring  in execute scalar{_connection.ConnectionString}");
         }
     }
 }

@@ -20,7 +20,8 @@ namespace HoustBuilder.LoadData
                                {
                                    config.AddJsonFile("appSettings.json", optional: true);
                                    config.AddEnvironmentVariables();
-                                   config.AddCloudFoundry();
+                                   
+
                                    if (args != null)
                                    {
                                        config.AddCommandLine(args);
@@ -30,12 +31,11 @@ namespace HoustBuilder.LoadData
                                })
                                .ConfigureServices((hostContext, services) =>
                                {
-                                   //var configRoot = hostContext.Configuration as IConfigurationRoot;
+                                   
                                   services.AddSqlServerConnection(hostContext.Configuration);
                                    services.Configure<Dbconfig>(hostContext.Configuration.GetSection("DbConfig"));
                                    services.AddSingleton<IDatabase, DataLoadDatabase>();
-                                   services.AddHostedService<DataLoaderService>();
-
+                                   services.ConfigureCloudFoundryOptions(hostContext.Configuration);
                                    services.AddSingleton<IHostedService, DataLoaderService>();
                                })
                                .ConfigureLogging((hostingContext, logging) =>
@@ -43,9 +43,13 @@ namespace HoustBuilder.LoadData
                                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                                    logging.AddConsole();
                                })
-                               .UseConsoleLifetime()
+                              // .UseConsoleLifetime()
+                              
                                .Build();
             await host.RunAsync();
+            
+            
+      
 
            
           
