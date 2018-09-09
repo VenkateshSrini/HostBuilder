@@ -25,7 +25,7 @@ namespace HoustBuilder.LoadData.ServiceProviders
             //(service.Name.CompareTo(dbConfig.Value.ServiceName) == 0)).Credentials;
 
             //if ((credentials != null) && (credentials.Any()))
-            //    _connectionString = credentials["connectionString"].Value;
+            //    _connectionString = credentials["ConnectionString"].Value;
             _logger = logger;
             _database = db;
 
