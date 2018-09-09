@@ -21,11 +21,11 @@ namespace HoustBuilder.LoadData.ServiceProviders
         public DataLoaderService(ILogger<DataLoaderService>logger, IOptions<CloudFoundryServicesOptions> serviceOptions,
             IOptions<Dbconfig> dbConfig, IDatabase db)
         {
-            var credentials = serviceOptions.Value.ServicesList.FirstOrDefault<Service>((service) =>
-            (service.Name.CompareTo(dbConfig.Value.ServiceName) == 0)).Credentials;
+            //var credentials = serviceOptions.Value.ServicesList.FirstOrDefault<Service>((service) =>
+            //(service.Name.CompareTo(dbConfig.Value.ServiceName) == 0)).Credentials;
 
-            if ((credentials != null) && (credentials.Any()))
-                _connectionString = credentials["connectionString"].Value;
+            //if ((credentials != null) && (credentials.Any()))
+            //    _connectionString = credentials["connectionString"].Value;
             _logger = logger;
             _database = db;
 
@@ -34,7 +34,7 @@ namespace HoustBuilder.LoadData.ServiceProviders
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting the dbservice");
-            _database.ExecuteScalar(_connectionString, "sp");
+            _database.ExecuteScalar( "sp");
             return Task.CompletedTask;
         }
 

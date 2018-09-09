@@ -6,6 +6,10 @@ using HoustBuilder.LoadData.Configuration;
 using HoustBuilder.LoadData.ServiceProviders;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
+using Steeltoe.CloudFoundry.Connector.App;
+using Steeltoe.CloudFoundry.Connector.Services;
+using Steeltoe.CloudFoundry.Connector.SqlServer;
+
 using System.Threading.Tasks;
 using HoustBuilder.LoadData.DbServices;
 
@@ -25,13 +29,13 @@ namespace HoustBuilder.LoadData
                                    {
                                        config.AddCommandLine(args);
                                    }
-                                   
-                                   
+
+
                                })
                                .ConfigureServices((hostContext, services) =>
                                {
-                                  
-                                   services.AddOptions();
+
+                                   services.AddSqlServerConnection(hostContext.Configuration);
                                    services.Configure<Dbconfig>(hostContext.Configuration.GetSection("DbConfig"));
                                    services.AddSingleton<IDatabase, DataLoadDatabase>();
                                    services.AddHostedService<DataLoaderService>();
