@@ -43,9 +43,10 @@ namespace HoustBuilder.LoadData
                                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                                    logging.AddConsole();
                                })
-                              // .UseConsoleLifetime()
-                              
                                .Build();
+            //await host.StartAsync();
+            //await host.StopAsync();
+            //System.Environment.Exit(0);
             await host.RunAsync();
             
             
