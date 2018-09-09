@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using Steeltoe.CloudFoundry.Connector.SqlServer;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Diagnostics;
 
 namespace HoustBuilder.LoadData
 {
@@ -15,6 +17,7 @@ namespace HoustBuilder.LoadData
     {
         public static async Task Main(string[] args)
         {
+            var isConsole = (Debugger.IsAttached || args.Contains("--console"));
             var host = new HostBuilder()
                                .ConfigureAppConfiguration((hostingContext, config) =>
                                {
@@ -31,11 +34,11 @@ namespace HoustBuilder.LoadData
                                })
                                .ConfigureServices((hostContext, services) =>
                                {
-                                   
-                                  services.AddSqlServerConnection(hostContext.Configuration);
-                                   services.Configure<Dbconfig>(hostContext.Configuration.GetSection("DbConfig"));
-                                   services.AddSingleton<IDatabase, DataLoadDatabase>();
                                    services.ConfigureCloudFoundryOptions(hostContext.Configuration);
+                                   services.AddSqlServerConnection(hostContext.Configuration);
+                                   services.Configure<Dbconfig>(hostContext.Configuration.GetSection("DbConfig"));
+                                   services.AddScoped<IDatabase, DataLoadDatabase>();
+                                   
                                    services.AddSingleton<IHostedService, DataLoaderService>();
                                })
                                .ConfigureLogging((hostingContext, logging) =>
@@ -44,17 +47,23 @@ namespace HoustBuilder.LoadData
                                    logging.AddConsole();
                                })
                                .Build();
-            //await host.StartAsync();
-            //await host.StopAsync();
-            //System.Environment.Exit(0);
-            await host.RunAsync();
-            
-            
-      
 
-           
-          
+            if (isConsole)
+                await host.RunAsync();
+            else
+            {
+                await host.StartAsync();
+                await host.StopAsync();
+                host.Dispose();
+            }
             
+
+
+
+
+
+
+
 
         }
     }
